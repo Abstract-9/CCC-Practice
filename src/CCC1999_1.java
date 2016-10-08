@@ -15,22 +15,22 @@ public class CCC1999_1 {
             while(!done){
                 if(ballx+dirX>xMax || ballx+dirX<0) dirX=switchdir(dirX);
                 ballx+=dirX;
-                if(bally+dirY>yMax || ballx+dirX<0) dirY=switchdir(dirY);
+                if(bally+dirY>yMax || bally+dirY<0) dirY=switchdir(dirY);
                 bally+=dirY;
                 if(ballx == point2x && bally == point2y) {
-                    break;
+                    done=true;
                 }else if(ctr!=0 && ballx == point1x && bally == point1y){
                     wont=true;
-                    break;
+                    done=true;
                 }
                 ctr++;
             }
-            if(wont==true) System.out.println("B cannot be reached from A.");
-            else System.out.println("B can be reached from A after " + ctr + "move(s).");
+            if(wont) System.out.println("B cannot be reached from A.");
+            else System.out.println("B can be reached from A after " + ctr + " move(s).");
         }
     }
-    public static Integer switchdir(int x){
-        if(x==-1) return 1;
+    private static Integer switchdir(int dir){
+        if(dir==-1) return 1;
         else return -1;
     }
 }
