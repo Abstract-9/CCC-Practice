@@ -32,21 +32,21 @@ public class CCC2000_S01_S03 {
             map.put(URL, connections);
         }
         while(true){
+
             String site = scan.nextLine();
             if(site.equals("The End")) break;
             else{
+                HashMap<String, Integer> distMap = new HashMap<>();
                 ArrayList<String> tmpsites = new ArrayList<>();
                 tmpsites.addAll(sites);
                 String site2 = scan.nextLine();
-                int[] dist = new int[tmpsites.size()];
-                String[] prev = new String[tmpsites.size()];
-                for(int j = 0;j<tmpsites.size();j++){
-                    String s = tmpsites.get(j);
-                    if(j!=0) dist[j]=(int)10e3;
+                for(String s : sites){
                     if(s.equals(site)){
                         tmpsites.remove(s);
                         tmpsites.add(0, s);
-                        dist[tmpsites.indexOf(s)]=0;
+                        distMap.put(s, 0);
+                    }else{
+                        distMap.put(s, Integer.MAX_VALUE);
                     }
                 }
 
@@ -56,28 +56,27 @@ public class CCC2000_S01_S03 {
                     int u = (int)10e3;
                     //extract min dist value from tmpsites( basically takes the first site in the set)
                     for(String s : tmpsites){
-                        if(dist[tmpsites.indexOf(s)]<u){
-                            u = dist[tmpsites.indexOf(s)];
+                        if(distMap.get(s)<u){
+                            u = distMap.get(s);
                             currentSite=s;
                         }
                     }
-
+                    if(currentSite.equals("")) break;
                     tmpsites.remove(currentSite);
                     for(String s : map.get(currentSite)){
                         if(tmpsites.contains(s)){
-                            if(u+1<dist[tmpsites.indexOf(s)]){
-                                dist[tmpsites.indexOf(s)] = u+1;
-                                prev[tmpsites.indexOf(s)] = currentSite;
+                            if(u+1<distMap.get(s)){
+                                distMap.put(s,u+1);
                             }
                         }
                     }
-                    if(currentSite.equals(site2) && u!=(int)10e3){
+                    if(currentSite.equals(site2) && u!=Integer.MAX_VALUE){
                         siteFound = true;
                         break;
-                    }else if(u==(int)10e3) break;
+                    }else if(u==Integer.MAX_VALUE) break;
                 }
                 if(siteFound) System.out.println("Can surf from " + site + " to " + site2);
-                else System.out.println("Can't surf from" + site);
+                else System.out.println("Can't surf from " + site);
 
             }
         }
